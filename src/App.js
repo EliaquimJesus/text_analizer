@@ -7,22 +7,45 @@ export default function App() {
     const [sentences, setSentences] = useState(0);
     const [paragraphs, setParagraphs] = useState(0);
     const [areaText, setAreaText] = useState("");
+    const [bigWord, setBigWord] = useState("");
 
     //variables
-    let chars, word, sentence, paragraph;
+    let chars, word, sentence, paragraph, biggestWord;
 
     // Count number of characters, words, sentences and pharagraphs
     chars = areaText.length;
 
-    areaText === "" ? (word = 0) : (word = areaText.split(" ").length);
+    word = text_analizer(areaText, " ");
 
-    areaText === "" ? (sentence = 0) : (sentence = areaText.split(".").length);
+    sentence = text_analizer(areaText, ".");
 
-    areaText === ""
-        ? (paragraph = 0)
-        : (paragraph = areaText.split("\n").length);
+    paragraph = text_analizer(areaText, "\n");
+
+    biggestWord = the_biggest_word(areaText);
+
+    // Function to analize the text given
+    function text_analizer(text, limiter) {
+        let tmp = [];
+        text.slice()
+            .split(limiter)
+            .forEach((el) => {
+                if (!(el === " " || el === "")) {
+                    tmp.push(el);
+                }
+            });
+
+        return tmp.length;
+    }
 
     // Calc the biggest word, and the typing average time.
+    function the_biggest_word(text) {
+        let tmp = "";
+        const arr = text.slice().split(" ");
+        arr.forEach((element) => {
+            if (element.length > tmp.length) tmp = element;
+        });
+        return tmp;
+    }
 
     function onHandleText(value) {
         setAreaText(value);
@@ -30,6 +53,7 @@ export default function App() {
         setWords(word);
         setSentences(sentence);
         setParagraphs(paragraph);
+        setBigWord(biggestWord);
     }
 
     return (
@@ -51,9 +75,8 @@ export default function App() {
             <Areatext onTextChange={onHandleText} />
             <div className="footer">
                 <Statistics>Average Reading Time: </Statistics>
-                <Statistics>Longest Word: </Statistics>
+                <Statistics>Longest Word: {bigWord}</Statistics>
             </div>
-            <p>{areaText}</p>
         </div>
     );
 }
