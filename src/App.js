@@ -62,7 +62,7 @@ export default function App() {
         setBigWord(biggestWord);
 
         const end = performance.now();
-        const time = Math.round(end - start);
+        const time = Math.round(end - start, 2);
         setAverageTime((prevValue) => (prevValue += time));
     }
 
@@ -86,7 +86,7 @@ export default function App() {
             <div className="footer">
                 <Statistics>
                     Average Reading Time:{" "}
-                    {areaText === "" ? "" : `~ ${averageTime}`}
+                    {areaText === "" ? "" : `~ ${averageTime} ms`}
                 </Statistics>
                 <Statistics>Longest Word: {bigWord}</Statistics>
             </div>
