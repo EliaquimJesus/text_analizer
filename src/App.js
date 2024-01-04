@@ -8,8 +8,9 @@ export default function App() {
     const [paragraphs, setParagraphs] = useState(0);
     const [areaText, setAreaText] = useState("");
     const [bigWord, setBigWord] = useState("");
+    const [averageTime, setAverageTime] = useState(0);
 
-    //variables
+    // variables
     let chars, word, sentence, paragraph, biggestWord;
 
     // Count number of characters, words, sentences and pharagraphs
@@ -40,20 +41,29 @@ export default function App() {
     // Calc the biggest word, and the typing average time.
     function the_biggest_word(text) {
         let tmp = "";
-        const arr = text.slice().split(" ");
-        arr.forEach((element) => {
-            if (element.length > tmp.length) tmp = element;
-        });
+        text.slice()
+            .split(" ")
+            .forEach((element) => {
+                if (element.length > tmp.length) tmp = element;
+            });
         return tmp;
     }
 
     function onHandleText(value) {
+        //get time execution
+        const start = performance.now();
+
+        //update state variables
         setAreaText(value);
         setCharacters(chars);
         setWords(word);
         setSentences(sentence);
         setParagraphs(paragraph);
         setBigWord(biggestWord);
+
+        const end = performance.now();
+        const time = Math.round(end - start);
+        setAverageTime((prevValue) => (prevValue += time));
     }
 
     return (
@@ -74,7 +84,10 @@ export default function App() {
             </div>
             <Areatext onTextChange={onHandleText} />
             <div className="footer">
-                <Statistics>Average Reading Time: </Statistics>
+                <Statistics>
+                    Average Reading Time:{" "}
+                    {areaText === "" ? "" : `~ ${averageTime}`}
+                </Statistics>
                 <Statistics>Longest Word: {bigWord}</Statistics>
             </div>
         </div>
