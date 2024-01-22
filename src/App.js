@@ -42,7 +42,7 @@ export default function App() {
     function the_biggest_word(text) {
         let tmp = "";
         text.slice()
-            .split(" ")
+            .split(/[" "\n]+/)
             .forEach((element) => {
                 if (element.length > tmp.length) tmp = element;
             });
